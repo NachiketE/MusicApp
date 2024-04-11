@@ -6,4 +6,5 @@ urlpatterns = [
     path('signup/', views.signup_view, name='signup'),
     path('home/', views.home_view, name='home'),
     path('all-songs/', views.all_songs_view, name='all_songs'),
+    path('add-music/', views.add_music, name='add_music'),
 ]
