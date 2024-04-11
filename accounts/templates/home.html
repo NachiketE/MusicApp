@@ -24,5 +24,11 @@
         {% endfor %}
     </ul>
     <a href="{% url 'all_songs' %}">View All Songs</a>
+
+    <form action="{% url 'create_playlist' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Your Playlists</button>
+    </form>
+    
 </body>
 </html>

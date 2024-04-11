@@ -6,6 +6,10 @@ from pymongo import MongoClient
 from django import forms
 from .forms import MusicForm
 from datetime import datetime
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from pymongo import MongoClient
 
 MONGO_HOST = 'localhost'
 MONGO_PORT = 27017
@@ -105,3 +109,82 @@ def search_results_view(request):
         search_results = []
     
     return render(request, 'search_results.html', {'query': query, 'search_results': search_results})
+
+@login_required
+def playlist_view(request):
+    # Retrieve playlists from MongoDB for the current user
+    user_playlists = get_user_playlists(request.user)
+    
+    if user_playlists is None:
+        user_playlists = []
+
+    return render(request, 'playlist.html', {'user_playlists': user_playlists})
+
+
+
+@login_required
+def create_playlist_view(request):
+    if request.method == 'POST':
+        playlist_name = request.POST.get('playlist_name')
+        user = request.user
+
+        # Check if a valid playlist name is provided
+        if playlist_name:
+            # Save playlist to MongoDB for the current user
+            save_playlist(user, playlist_name)
+
+        # Redirect to the playlist page
+        return HttpResponseRedirect(reverse('playlist'))
+
+    return render(request, 'create_playlist.html')
+
+
+
+def get_user_playlists(user):
+    # Connect to MongoDB
+    client = MongoClient('localhost', 27017)
+    db = client['music']
+    
+    # Calculate partition number using the hash function
+    partition_number = hash_user_id(user.id, NUM_PARTITIONS) + 1
+    
+    # Get the collection for the user's playlists
+    collection_name = f'playlist_{partition_number}'
+    collection = db[collection_name]
+    
+    # Retrieve the playlists for the user
+    user_playlists = list(collection.find({'user_id': str(user.id)}))
+    
+    # Check if any playlists exist for the user
+    if user_playlists:
+        return user_playlists
+    else:
+        return None
+
+
+def save_playlist(user, playlist_name):
+    # Connect to MongoDB
+    client = MongoClient('localhost', 27017)
+    db = client['music']
+    
+    # Calculate partition number using the hash function
+    partition_number = hash_user_id(user.id, NUM_PARTITIONS) + 1
+    
+    # Get the collection for the user's playlists
+    collection_name = f'playlist_{partition_number}'
+    collection = db[collection_name]
+    
+    # Insert the new playlist document
+    playlist_data = {
+        'user_id': str(user.id),
+        'playlist_name': playlist_name
+    }
+    collection.insert_one(playlist_data)
+
+
+def hash_user_id(user_id, num_partitions):
+    user_id_int = int(user_id)
+    
+    hash_value = user_id_int % num_partitions
+    
+    return hash_value
