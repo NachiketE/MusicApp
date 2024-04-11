@@ -73,7 +73,7 @@ def home_view(request):
 def all_songs_view(request):
     # Connect to MongoDB
     client = MongoClient('localhost', 27017)
-    db = client['MusicPlaylistManagementSystem']
+    db = client['music']
     
     collections = ['Music_1', 'Music_2', 'Music_3', 'Music_4', 'Music_5']
     
@@ -84,3 +84,24 @@ def all_songs_view(request):
     
     return render(request, 'all_songs.html', {'songs': songs})
 
+
+def search_results_view(request):
+    query = request.GET.get('q')
+    if query:
+        # Connect to MongoDB
+        client = MongoClient('localhost', 27017)
+        db = client['music']
+        
+        # List of collection names
+        collections = ['Music_1', 'Music_2', 'Music_3', 'Music_4', 'Music_5']
+        
+        # Search each collection for the query
+        search_results = []
+        for collection_name in collections:
+            collection = db[collection_name]
+            results = collection.find({'$or': [{'title': {'$regex': query, '$options': 'i'}}, {'artist': {'$regex': query, '$options': 'i'}}]})
+            search_results.extend(results)
+    else:
+        search_results = []
+    
+    return render(request, 'search_results.html', {'query': query, 'search_results': search_results})

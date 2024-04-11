@@ -79,7 +79,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'ENFORCE_SCHEMA': False,  # Set to False if you don't want to enforce schema validation
-        'NAME': 'MusicPlaylistManagementSystem',  # Name of your MongoDB database
+        'NAME': 'music',  # Name of your MongoDB database
         'CLIENT': {
             'host': 'mongodb://localhost:27017/',  # MongoDB host address and port
         }
