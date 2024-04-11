@@ -35,7 +35,7 @@ def home_view(request):
 def all_songs_view(request):
     # Connect to MongoDB
     client = MongoClient('localhost', 27017)
-    db = client['music']
+    db = client['MusicPlaylistManagementSystem']
     
     collections = ['Music_1', 'Music_2', 'Music_3', 'Music_4', 'Music_5']
     
