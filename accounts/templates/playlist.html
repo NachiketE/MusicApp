@@ -1,23 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Playlists</title>
+    <title>Playlists</title>
 </head>
 <body>
-    <h1>My Playlists</h1>
-    {% if message %}
-        <p>{{ message }}</p>
-    {% else %}
+    <h1>Your Playlists</h1>
+    {% if user_playlists %}
         <ul>
             {% for playlist in user_playlists %}
-                <li>{{ playlist.playlist_name }}</li>
-            {% empty %}
-                <li>No playlists found</li>
+                <li>
+                    {{ playlist.playlist_name }}
+                    <form action="{% url 'delete_playlist' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="playlist_name" value="{{ playlist.playlist_name }}">
+                        <button type="submit">Delete</button>
+                    </form>
+                </li>
             {% endfor %}
         </ul>
+    {% else %}
+        <p>No playlists found.</p>
     {% endif %}
     <a href="{% url 'create_playlist' %}">Create Playlist</a>
+
 </body>
 </html>

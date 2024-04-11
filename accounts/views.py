@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from pymongo import MongoClient
+from bson import ObjectId
 
 MONGO_HOST = 'localhost'
 MONGO_PORT = 27017
@@ -188,3 +189,23 @@ def hash_user_id(user_id, num_partitions):
     hash_value = user_id_int % num_partitions
     
     return hash_value
+
+
+@login_required
+def delete_playlist_view(request):
+    if request.method == 'POST':
+        # Connect to MongoDB
+        client = MongoClient('localhost', 27017)
+        db = client['music']
+
+        # Get playlist name from form data
+        playlist_name = request.POST.get('playlist_name')
+
+        # Delete the playlist from the MongoDB collection
+        collections = ['playlist_1', 'playlist_2', 'playlist_3', 'playlist_4', 'playlist_5']
+        for collection_name in collections:
+            collection = db[collection_name]
+            collection.delete_one({'playlist_name': playlist_name})
+
+        # Redirect back to the playlist page
+        return HttpResponseRedirect(reverse('playlist'))
