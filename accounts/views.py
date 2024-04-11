@@ -27,8 +27,10 @@ def signup_view(request):
     return render(request, 'registration/signup.html', {'form': form})
 
 def home_view(request):
+    username = request.user.username if request.user.is_authenticated else None
+
     songs = Song.objects.all()
-    return render(request, 'home.html', {'songs': songs})
+    return render(request, 'home.html', {'username': username,'songs': songs})
 
 def all_songs_view(request):
     # Connect to MongoDB

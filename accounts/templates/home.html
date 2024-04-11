@@ -6,11 +6,16 @@
     <title>Home</title>
 </head>
 <body>
-    <h2>Welcome to the home page!</h2>
-    <h3>Your Songs:</h3>
+    {% if username %}
+        <p>Welcome, {{ username }}</p>
+    {% else %}
+        <p>Welcome, Guest</p>
+    {% endif %}
+    
+    <h2>Your Songs:</h2>
     <ul>
         {% for song in songs %}
-        <li>{{ song.title }} - {{ song.artist }}</li>
+            <li>{{ song.title }} - {{ song.artist }}</li>
         {% endfor %}
     </ul>
     <a href="{% url 'all_songs' %}">View All Songs</a>
