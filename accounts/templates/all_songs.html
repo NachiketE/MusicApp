@@ -4,13 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Songs</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <h2>All Songs</h2>
     <ul>
         {% for song in songs %}
-        <li>{{ song.title }} - {{ song.artist }}</li>
+        <li>
+            {{ song.title }} - {{ song.artist }}
+            <div class="dropdown">
+                <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Add to Playlist
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    {% for playlist in user_playlists %}
+                    <form action="{% url 'playlist' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="song_id" value="{{ song.id }}">
+                        <input type="hidden" name="playlist_name" value="{{ playlist.playlist_name }}">
+                        <button class="dropdown-item" type="submit">{{ playlist.playlist_name }}</button>
+                    </form>
+                    {% endfor %}
+                </div>
+            </div>
+        </li>
         {% endfor %}
     </ul>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </body>
 </html>

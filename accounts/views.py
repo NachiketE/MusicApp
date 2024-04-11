@@ -79,6 +79,7 @@ def all_songs_view(request):
     # Connect to MongoDB
     client = MongoClient('localhost', 27017)
     db = client['music']
+    user = request.user
     
     collections = ['Music_1', 'Music_2', 'Music_3', 'Music_4', 'Music_5']
     
@@ -87,7 +88,9 @@ def all_songs_view(request):
         collection = db[collection_name]
         songs.extend(collection.find())  # Retrieve all documents in the collection
     
-    return render(request, 'all_songs.html', {'songs': songs})
+    user_playlists = get_user_playlists(user)
+
+    return render(request, 'all_songs.html', {'songs': songs, 'user_playlists': user_playlists})
 
 
 def search_results_view(request):
