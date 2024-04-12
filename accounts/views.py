@@ -13,6 +13,11 @@ from pymongo import MongoClient
 from bson import ObjectId
 import random
 
+MONGO_HOST = 'localhost'
+MONGO_PORT = 27017
+DATABASE_NAME = 'MusicPlaylistManagementSystem'
+NUM_PARTITIONS = 2
+
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
