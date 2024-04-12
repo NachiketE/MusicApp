@@ -80,7 +80,7 @@ def all_songs_view(request):
     client = MongoClient('localhost', 27017)
     db = client['music']
     user = request.user
-    
+
     collections = ['Music_1', 'Music_2', 'Music_3', 'Music_4', 'Music_5']
     
     songs = []
@@ -102,7 +102,10 @@ def search_results_view(request):
         
         # List of collection names
         collections = ['Music_1', 'Music_2', 'Music_3', 'Music_4', 'Music_5']
-        
+        user = request.user
+
+        user_playlists = get_user_playlists(user)
+
         # Search each collection for the query
         search_results = []
         for collection_name in collections:
@@ -112,7 +115,7 @@ def search_results_view(request):
     else:
         search_results = []
     
-    return render(request, 'search_results.html', {'query': query, 'search_results': search_results})
+    return render(request, 'search_results.html', {'query': query, 'search_results': search_results,  'user_playlists': user_playlists})
 
 @login_required
 def playlist_view(request):
