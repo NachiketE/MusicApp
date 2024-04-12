@@ -11,6 +11,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from pymongo import MongoClient
 from bson import ObjectId
+import random
 
 MONGO_HOST = 'localhost'
 MONGO_PORT = 27017
@@ -169,6 +170,7 @@ def get_user_playlists(user):
         return None
 
 
+
 def save_playlist(user, playlist_name):
     # Connect to MongoDB
     client = MongoClient('localhost', 27017)
@@ -181,12 +183,24 @@ def save_playlist(user, playlist_name):
     collection_name = f'playlist_{partition_number}'
     collection = db[collection_name]
     
+    # Generate a unique playlist_id
+    playlist_id = generate_unique_playlist_id(collection)
+    
     # Insert the new playlist document
     playlist_data = {
+        'playlist_id': playlist_id,
         'user_id': str(user.id),
         'playlist_name': playlist_name
     }
     collection.insert_one(playlist_data)
+
+def generate_unique_playlist_id(collection):
+    playlist_id = random.randint(1, 100000)
+    # Check if the playlist_id already exists in the collection
+    while collection.find_one({'playlist_id': playlist_id}):
+        playlist_id = random.randint(1, 100000)
+    return playlist_id
+
 
 
 def hash_user_id(user_id, num_partitions):
