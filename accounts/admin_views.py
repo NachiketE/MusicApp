@@ -11,7 +11,7 @@ DATABASE_NAME = 'music'
 NUM_PARTITIONS = 5
 
 def admin_control(request):
-    return render(request, 'admin_control.html')
+    return render(request, 'admin-templates/admin_control.html')
 
 def music_page(request):
     client = MongoClient('localhost', 27017)
@@ -24,13 +24,13 @@ def music_page(request):
         collection = db[collection_name]
         songs.extend(collection.find())  
 
-    return render(request, 'admin_music_page.html', {'songs': songs})
+    return render(request, 'admin-templates/admin_music_page.html', {'songs': songs})
 
 def users_page(request):
-    return render(request, 'admin_users_page.html')
+    return render(request, 'admin-templates/admin_users_page.html')
 
 def playlists_page(request):
-    return render(request, 'admin_playlists_page.html')
+    return render(request, 'admin-templates/admin_playlists_page.html')
 
 def consistent_hash_alphabetical(name, num_partitions):
     first_letter = name[0].lower()
@@ -59,7 +59,7 @@ def add_music(request):
             music_data['music_id'] = music_id
             collection.insert_one(music_data)
             client.close()
-            return render(request, 'success.html')
+            return render(request, 'admin-templates/add_music_success.html')
     else:
         form = MusicForm()
-    return render(request, 'add_music.html', {'form': form})
+    return render(request, 'admin-templates/add_music.html', {'form': form})
