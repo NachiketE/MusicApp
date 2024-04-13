@@ -2,37 +2,61 @@ from django.shortcuts import render
 from pymongo import MongoClient
 from .forms import MusicForm
 from pymongo import MongoClient
+import random
 
 
 MONGO_HOST = 'localhost'
 MONGO_PORT = 27017
-DATABASE_NAME = 'MusicPlaylistManagementSystem'
+DATABASE_NAME = 'music'
 NUM_PARTITIONS = 5
 
+def admin_control(request):
+    return render(request, 'admin_control.html')
+
+def music_page(request):
+    client = MongoClient('localhost', 27017)
+    db = client['music']
+
+    collections = ['Music_1', 'Music_2', 'Music_3', 'Music_4', 'Music_5']
+    
+    songs = []
+    for collection_name in collections:
+        collection = db[collection_name]
+        songs.extend(collection.find())  
+
+    return render(request, 'admin_music_page.html', {'songs': songs})
+
+def users_page(request):
+    return render(request, 'admin_users_page.html')
+
+def playlists_page(request):
+    return render(request, 'admin_playlists_page.html')
+
 def consistent_hash_alphabetical(name, num_partitions):
-    # Convert the first letter of the name to lowercase
     first_letter = name[0].lower()
-    
-    
-    # Convert the lowercase letter to an ASCII value
     ascii_value = ord(first_letter)
-    
-    # Calculate partition number based on ASCII value
     partition_number = ascii_value % num_partitions
     return partition_number
+
+def generate_unique_music_id(collection):
+    music_id = random.randint(1, 100000)
+    while collection.find_one({'music_id': music_id}):
+        music_id = random.randint(1, 100000)
+    return music_id
 
 def add_music(request):
     if request.method == 'POST':
         form = MusicForm(request.POST)
         if form.is_valid():
             music_data = form.cleaned_data
-            # Convert release_date to string format
             music_data['release_date'] = music_data['release_date'].strftime('%Y-%m-%d')
             partition_number = consistent_hash_alphabetical(music_data['title'], NUM_PARTITIONS)
             collection_name = f"Music_{partition_number + 1}"
             client = MongoClient(MONGO_HOST, MONGO_PORT)
             db = client[DATABASE_NAME]
             collection = db[collection_name]
+            music_id = generate_unique_music_id(collection)
+            music_data['music_id'] = music_id
             collection.insert_one(music_data)
             client.close()
             return render(request, 'success.html')

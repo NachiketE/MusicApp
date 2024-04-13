@@ -15,7 +15,7 @@ import random
 
 MONGO_HOST = 'localhost'
 MONGO_PORT = 27017
-DATABASE_NAME = 'MusicPlaylistManagementSystem'
+DATABASE_NAME = 'music'
 NUM_PARTITIONS = 2
 
 def login_view(request):

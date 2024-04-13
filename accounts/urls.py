@@ -12,5 +12,9 @@ urlpatterns = [
     path('playlist/', views.playlist_view, name='playlist'),
     path('create-playlist/', views.create_playlist_view, name='create_playlist'),
     path('delete-playlist/', views.delete_playlist_view, name='delete_playlist'),
+    path('admin-control/', admin_views.admin_control, name='admin_control'),
+    path('admin-music/', admin_views.music_page, name='admin_music_page'),
+    path('admin-users/', admin_views.users_page, name='admin_users_page'),
+    path('admin-playlists/', admin_views.playlists_page, name='admin_playlists_page'),
 
 ]
