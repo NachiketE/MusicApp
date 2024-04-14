@@ -17,6 +17,17 @@
                     <input type="hidden" name="title" value="{{ result.title }}">
                     <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
+                <button class="btn btn-primary edit-song" data-id="{{ result.id }}">Edit</button>
+            <div class="edit-form" style="display: none;">
+                <form action="{% url 'admin_edit_song' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="original_title" value="{{ result.title }}">
+                    <input type="text" name="title" placeholder="Title" value="{{ result.title }}">
+                    <input type="text" name="artist" placeholder="Artist" value="{{ result.artist }}">
+                    <!-- Add fields for other song attributes as needed -->
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            </div>
             </li>
         {% empty %}
             <li>No results found</li>
@@ -25,5 +36,12 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.edit-song').click(function() {
+                $(this).siblings('.edit-form').toggle();
+            });
+        });
+    </script>
 </body>
 </html>
