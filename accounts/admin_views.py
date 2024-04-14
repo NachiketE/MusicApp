@@ -3,13 +3,35 @@ from pymongo import MongoClient
 from .forms import MusicForm
 from pymongo import MongoClient
 from .models import Song
+from bson import ObjectId
 import random
-
 
 MONGO_HOST = 'localhost'
 MONGO_PORT = 27017
 DATABASE_NAME = 'music'
 NUM_PARTITIONS = 5
+
+def edit_music(request):
+    if request.method == 'POST':
+        original_title = request.POST.get('original_title')
+        title = request.POST.get('title')
+        artist = request.POST.get('artist')
+
+        print(original_title)
+        print(title)
+        print(artist)
+
+        client = MongoClient('localhost', 27017)
+        db = client['music']
+        collections = ['Music_1', 'Music_2', 'Music_3', 'Music_4', 'Music_5']
+
+        for collection_name in collections:
+                collection = db[collection_name]
+                result = collection.update_one({'title': original_title}, {'$set': {'title': title, 'artist': artist}})
+
+        client.close()
+
+        return render(request, 'admin-templates/edit_music_success.html')
 
 def delete_music(request):
     client = MongoClient('localhost', 27017)
