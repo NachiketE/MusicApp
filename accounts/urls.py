@@ -16,5 +16,7 @@ urlpatterns = [
     path('admin-music/', admin_views.music_page, name='admin_music_page'),
     path('admin-users/', admin_views.users_page, name='admin_users_page'),
     path('admin-playlists/', admin_views.playlists_page, name='admin_playlists_page'),
-
+    path('admin-view-music/', admin_views.view_all_music, name='admin_view_music'),
+    path('admin-search-music/', admin_views.search_music, name='admin_search_music'),
+    path('admin-delete-song/', admin_views.delete_music, name='admin_delete_song'),
 ]

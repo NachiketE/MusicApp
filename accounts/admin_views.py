@@ -2,6 +2,7 @@ from django.shortcuts import render
 from pymongo import MongoClient
 from .forms import MusicForm
 from pymongo import MongoClient
+from .models import Song
 import random
 
 
@@ -10,10 +11,45 @@ MONGO_PORT = 27017
 DATABASE_NAME = 'music'
 NUM_PARTITIONS = 5
 
+def delete_music(request):
+    client = MongoClient('localhost', 27017)
+    db = client['music']
+    collections = ['Music_1', 'Music_2', 'Music_3', 'Music_4', 'Music_5']
+
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        print(title)
+        try:
+            for collection_name in collections:
+                collection = db[collection_name]
+                collection.delete_one({'title': title})
+            return render(request, 'admin-templates/delete_music_success.html')
+        except Song.DoesNotExist:
+            pass
+    return render(request, 'admin-templates/delete_music_success.html')  
+
+def search_music(request):
+    query = request.GET.get('q')
+    if query:
+        client = MongoClient('localhost', 27017)
+        db = client['music']
+
+        collections = ['Music_1', 'Music_2', 'Music_3', 'Music_4', 'Music_5']
+
+        search_results = []
+        for collection_name in collections:
+            collection = db[collection_name]
+            results = collection.find({'$or': [{'title': {'$regex': query, '$options': 'i'}}, {'artist': {'$regex': query, '$options': 'i'}}]})
+            search_results.extend(results)
+    else:
+        search_results = []
+    
+    return render(request, 'admin-templates/search_music.html', {'query': query, 'search_results': search_results})
+
 def admin_control(request):
     return render(request, 'admin-templates/admin_control.html')
 
-def music_page(request):
+def view_all_music(request):
     client = MongoClient('localhost', 27017)
     db = client['music']
 
@@ -24,7 +60,10 @@ def music_page(request):
         collection = db[collection_name]
         songs.extend(collection.find())  
 
-    return render(request, 'admin-templates/admin_music_page.html', {'songs': songs})
+    return render(request, 'admin-templates/view_all_music.html', {'songs': songs})
+
+def music_page(request):
+    return render(request, 'admin-templates/admin_music_page.html')
 
 def users_page(request):
     return render(request, 'admin-templates/admin_users_page.html')
