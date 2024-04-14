@@ -50,6 +50,23 @@ def delete_music(request):
             pass
     return render(request, 'admin-templates/delete_music_success.html')  
 
+def delete_user(request):
+    client = MongoClient('localhost', 27017)
+    db = client['music']
+    collections = ['auth_user']
+
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        print(username)
+        try:
+            for collection_name in collections:
+                collection = db[collection_name]
+                collection.delete_one({'username': username})
+            return render(request, 'admin-templates/delete_user_success.html')
+        except Song.DoesNotExist:
+            pass
+    return render(request, 'admin-templates/delete_user_success.html')  
+
 def search_music(request):
     query = request.GET.get('q')
     if query:
@@ -88,7 +105,16 @@ def music_page(request):
     return render(request, 'admin-templates/admin_music_page.html')
 
 def users_page(request):
-    return render(request, 'admin-templates/admin_users_page.html')
+    client = MongoClient('localhost', 27017)
+    db = client['music']
+    collections = ['auth_user']
+    
+    users = []
+    for collection_name in collections:
+        collection = db[collection_name]
+        users.extend(collection.find())  
+
+    return render(request, 'admin-templates/admin_users_page.html', {'users': users})
 
 def playlists_page(request):
     return render(request, 'admin-templates/admin_playlists_page.html')

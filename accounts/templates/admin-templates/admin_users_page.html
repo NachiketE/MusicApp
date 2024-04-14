@@ -3,10 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music</title>
+    <title>Users</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <h1>Music Page</h1>
-    <!-- Add any content specific to the music page here -->
+    <h1>All Users</h1>
+
+    <ul>
+        {% for user in users %}
+        <li>
+            {{ user.username }}
+            <form action="{% url 'admin_delete_user' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <input type="hidden" name="username" value="{{ user.username }}">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin-search-music/', admin_views.search_music, name='admin_search_music'),
     path('admin-delete-song/', admin_views.delete_music, name='admin_delete_song'),
     path('admin-edit-song/', admin_views.edit_music, name='admin_edit_song'),
+    path('admin-delete-user/', admin_views.delete_user, name='admin_delete_user'),
 ]
