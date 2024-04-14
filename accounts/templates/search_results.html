@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Results</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
-
 </head>
 <body>
     <h2>Search Results for "{{ query }}"</h2>
@@ -18,17 +17,17 @@
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         {% for playlist in user_playlists %}
-                        <form action="{% url 'playlist' %}" method="post">
+                        <form action="{% url 'add_song_to_playlist' %}" method="post">
                             {% csrf_token %}
-                            <input type="hidden" name="song_id" value="{{ song.id }}">
-                            <input type="hidden" name="playlist_name" value="{{ playlist.playlist_name }}">
+                            <input type="hidden" name="music_id" value="{{ result.music_id }}">
+                            <input type="hidden" name="playlist_id" value="{{ playlist.playlist_id }}">
                             <button class="dropdown-item" type="submit">{{ playlist.playlist_name }}</button>
                         </form>
+                        
                         {% endfor %}
                     </div>
                 </div>
             </li>
-
         {% empty %}
             <li>No results found</li>
         {% endfor %}

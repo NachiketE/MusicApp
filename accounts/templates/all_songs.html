@@ -18,10 +18,10 @@
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     {% for playlist in user_playlists %}
-                    <form action="{% url 'playlist' %}" method="post">
+                    <form action="{% url 'add_song_to_playlist' %}" method="post">
                         {% csrf_token %}
-                        <input type="hidden" name="song_id" value="{{ song.id }}">
-                        <input type="hidden" name="playlist_name" value="{{ playlist.playlist_name }}">
+                        <input type="hidden" name="music_id" value="{{ song.music_id }}">
+                        <input type="hidden" name="playlist_id" value="{{ playlist.playlist_id }}">
                         <button class="dropdown-item" type="submit">{{ playlist.playlist_name }}</button>
                     </form>
                     {% endfor %}

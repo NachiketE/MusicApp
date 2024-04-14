@@ -12,7 +12,8 @@
                     {{ playlist.playlist_name }}
                     <form action="{% url 'delete_playlist' %}" method="post">
                         {% csrf_token %}
-                        <input type="hidden" name="playlist_name" value="{{ playlist.playlist_name }}">
+                        <a href="{% url 'view_playlist_songs' playlist.playlist_id %}">{{ playlist.playlist_name }}</a>
+
                         <button type="submit">Delete</button>
                     </form>
                 </li>

@@ -6,7 +6,7 @@ from pymongo import MongoClient
 
 MONGO_HOST = 'localhost'
 MONGO_PORT = 27017
-DATABASE_NAME = 'MusicPlaylistManagementSystem'
+DATABASE_NAME = 'music'
 NUM_PARTITIONS = 5
 
 def consistent_hash_alphabetical(name, num_partitions):

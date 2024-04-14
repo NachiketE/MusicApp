@@ -12,5 +12,7 @@ urlpatterns = [
     path('playlist/', views.playlist_view, name='playlist'),
     path('create-playlist/', views.create_playlist_view, name='create_playlist'),
     path('delete-playlist/', views.delete_playlist_view, name='delete_playlist'),
+    path('add-to-playlist/', views.add_to_playlist_view, name='add_song_to_playlist'),
+    path('view-playlist-songs/<int:playlist_id>/', views.view_playlist_songs, name='view_playlist_songs'),
 
 ]
