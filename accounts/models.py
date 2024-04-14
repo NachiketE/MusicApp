@@ -10,3 +10,10 @@ class Song(models.Model):
 
     def __str__(self):
         return self.title
+
+class PlaylistMusicMapping(models.Model):
+    playlist_id = models.CharField(max_length=100)
+    music_id = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"Playlist: {self.playlist_id}, Song: {self.music_id}"

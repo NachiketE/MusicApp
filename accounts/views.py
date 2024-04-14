@@ -12,6 +12,7 @@ from django.urls import reverse
 from pymongo import MongoClient
 from bson import ObjectId
 import random
+from .models import PlaylistMusicMapping
 
 MONGO_HOST = 'localhost'
 MONGO_PORT = 27017
@@ -126,7 +127,7 @@ def get_user_playlists(user):
     partition_number = hash_user_id(user.id, NUM_PARTITIONS) + 1
     
     # Get the collection for the user's playlists
-    collection_name = f'playlist_{partition_number}'
+    collection_name = f'Playlist_{partition_number}'
     collection = db[collection_name]
     
     # Retrieve the playlists for the user
@@ -149,7 +150,7 @@ def save_playlist(user, playlist_name):
     partition_number = hash_user_id(user.id, NUM_PARTITIONS) + 1
     
     # Get the collection for the user's playlists
-    collection_name = f'playlist_{partition_number}'
+    collection_name = f'Playlist_{partition_number}'
     collection = db[collection_name]
     
     # Generate a unique playlist_id
@@ -191,10 +192,73 @@ def delete_playlist_view(request):
         playlist_name = request.POST.get('playlist_name')
 
         # Delete the playlist from the MongoDB collection
-        collections = ['playlist_1', 'playlist_2', 'playlist_3', 'playlist_4', 'playlist_5']
+        collections = ['Playlist_1', 'Playlist_2']
         for collection_name in collections:
             collection = db[collection_name]
             collection.delete_one({'playlist_name': playlist_name})
 
         # Redirect back to the playlist page
         return HttpResponseRedirect(reverse('playlist'))
+    
+@login_required
+def add_to_playlist_view(request):
+    if request.method == 'POST':
+        client = MongoClient('localhost', 27017)
+        db = client['music']
+        music_id = request.POST.get('music_id')
+        playlist_id = request.POST.get('playlist_id')
+        print(music_id)
+        print(playlist_id)
+        # Create an entry in PlaylistMusicMapping collection
+        mapping_entry = {
+        'music_id': music_id,
+        'playlist_id': playlist_id
+        }
+        print(mapping_entry)
+        
+
+        
+        collection_name = 'PlaylistMusicMapping'
+        collection = db[collection_name]
+
+        collection.insert_one(mapping_entry)
+
+        
+        # Redirect to a new page with a success message
+        return render(request, 'song_added.html', {'music_id': music_id, 'playlist_id': playlist_id})
+    else:
+        # Handle GET requests if needed
+        pass
+
+
+@login_required
+def view_playlist_songs(request, playlist_id):
+    # Connect to MongoDB
+    client = MongoClient('localhost', 27017)
+    db = client['music']  # Replace 'your_database_name' with your actual MongoDB database name
+
+    # Retrieve the songs associated with the playlist from the PlaylistMusicMapping collection
+    playlist_mapping_collection = db['PlaylistMusicMapping']
+    playlist_mapping_data = list(playlist_mapping_collection.find({'playlist_id': str(playlist_id)}))
+
+    # Retrieve song details from all the Music collections based on song_id
+    songs = []
+    for mapping_data in playlist_mapping_data:
+        song_id = mapping_data['music_id']
+        for collection_name in db.list_collection_names():
+            if collection_name.startswith("Music_"):
+                music_collection = db[collection_name]
+                song_data = music_collection.find_one({'music_id': str(song_id)})
+                if song_data:
+                    song = Song(
+                        music_id=song_data['music_id'],
+                        title=song_data['title'],
+                        artist=song_data['artist'],
+                        genre=song_data['genre'],
+                        duration=song_data['duration'],
+                        release_date=song_data['release_date']
+                    )
+                    songs.append(song)
+
+    # Render the single_playlist.html template with the playlist and songs data
+    return render(request, 'single_playlist.html', {'songs': songs})
