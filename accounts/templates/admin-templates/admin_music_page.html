@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <h1>Music Page</h1>
+    <a href="{% url 'admin_view_music' %}">View All Music</a>
+    <a href="{% url 'add_music' %}">Add Music</a>
+    <form action="{% url 'admin_search_music' %}" method="get">
+        <input type="text" name="q" placeholder="Search songs or artists">
+        <button type="submit">Search</button>
+    </form>
+
+    <ul>
+        {% for song in songs %}
+        <li>
+            {{ song.title }} - {{ song.artist }}
+        </li>
+        {% endfor %}
+    </ul>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>
