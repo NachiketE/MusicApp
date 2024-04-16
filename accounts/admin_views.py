@@ -186,4 +186,4 @@ def view_playlist_songs(request, playlist_id):
                     )
                     songs.append(song)
 
-    return render(request, 'single_playlist.html', {'songs': songs})
+    return render(request, 'admin-templates/admin_single_playlist.html', {'songs': songs})
