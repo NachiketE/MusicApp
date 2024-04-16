@@ -23,4 +23,5 @@ urlpatterns = [
     path('admin-delete-song/', admin_views.delete_music, name='admin_delete_song'),
     path('admin-edit-song/', admin_views.edit_music, name='admin_edit_song'),
     path('admin-delete-user/', admin_views.delete_user, name='admin_delete_user'),
+    path('admin-view-playlist-songs/<int:playlist_id>/', admin_views.view_playlist_songs, name='admin_view_playlist_songs')
 ]
