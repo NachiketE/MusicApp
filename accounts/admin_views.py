@@ -117,7 +117,17 @@ def users_page(request):
     return render(request, 'admin-templates/admin_users_page.html', {'users': users})
 
 def playlists_page(request):
-    return render(request, 'admin-templates/admin_playlists_page.html')
+    client = MongoClient('localhost', 27017)
+    db = client['music']
+
+    collections = ['Playlist_1', 'Playlist_2']
+    
+    playlists = []
+    for collection_name in collections:
+        collection = db[collection_name]
+        playlists.extend(collection.find())  
+
+    return render(request, 'admin-templates/admin_playlists_page.html', {'playlists': playlists})
 
 def consistent_hash_alphabetical(name, num_partitions):
     first_letter = name[0].lower()
@@ -150,3 +160,30 @@ def add_music(request):
     else:
         form = MusicForm()
     return render(request, 'admin-templates/add_music.html', {'form': form})
+
+def view_playlist_songs(request, playlist_id):
+    client = MongoClient('localhost', 27017)
+    db = client['music']
+
+    playlist_mapping_collection = db['PlaylistMusicMapping']
+    playlist_mapping_data = list(playlist_mapping_collection.find({'playlist_id': str(playlist_id)}))
+
+    songs = []
+    for mapping_data in playlist_mapping_data:
+        song_id = mapping_data['music_id']
+        for collection_name in db.list_collection_names():
+            if collection_name.startswith("Music_"):
+                music_collection = db[collection_name]
+                song_data = music_collection.find_one({'music_id': str(song_id)})
+                if song_data:
+                    song = Song(
+                        music_id=song_data['music_id'],
+                        title=song_data['title'],
+                        artist=song_data['artist'],
+                        genre=song_data['genre'],
+                        duration=song_data['duration'],
+                        release_date=song_data['release_date']
+                    )
+                    songs.append(song)
+
+    return render(request, 'single_playlist.html', {'songs': songs})
