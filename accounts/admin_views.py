@@ -152,7 +152,7 @@ def add_music(request):
             client = MongoClient(MONGO_HOST, MONGO_PORT)
             db = client[DATABASE_NAME]
             collection = db[collection_name]
-            music_id = generate_unique_music_id(collection)
+            music_id = str(generate_unique_music_id(collection))
             music_data['music_id'] = music_id
             collection.insert_one(music_data)
             client.close()
