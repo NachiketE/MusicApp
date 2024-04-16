@@ -17,6 +17,13 @@
                     <strong>Genre:</strong> {{ song.genre }}<br>
                     <strong>Duration:</strong> {{ song.duration }}<br>
                     <strong>Release Date:</strong> {{ song.release_date }}
+                    <form method="post" action="{% url 'delete_song_from_playlist' playlist_id %}">
+
+
+                        {% csrf_token %}
+                        <input type="hidden" name="song_id" value="{{ song.music_id }}">
+                        <button type="submit">Delete</button>
+                    </form>
                 </li>
             {% endfor %}
         </ul>

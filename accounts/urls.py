@@ -14,6 +14,8 @@ urlpatterns = [
     path('delete-playlist/', views.delete_playlist_view, name='delete_playlist'),
     path('add-to-playlist/', views.add_to_playlist_view, name='add_song_to_playlist'),
     path('view-playlist-songs/<int:playlist_id>/', views.view_playlist_songs, name='view_playlist_songs'),
+    path('delete-song/<int:playlist_id>/', views.delete_song_from_playlist, name='delete_song_from_playlist'),
+
     path('admin-control/', admin_views.admin_control, name='admin_control'),
     path('admin-music/', admin_views.music_page, name='admin_music_page'),
     path('admin-users/', admin_views.users_page, name='admin_users_page'),

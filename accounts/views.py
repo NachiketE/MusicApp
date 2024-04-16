@@ -261,4 +261,17 @@ def view_playlist_songs(request, playlist_id):
                     songs.append(song)
 
     # Render the single_playlist.html template with the playlist and songs data
-    return render(request, 'single_playlist.html', {'songs': songs})
+    return render(request, 'single_playlist.html', {'songs': songs, 'playlist_id': playlist_id})
+
+
+@login_required
+def delete_song_from_playlist(request, playlist_id):
+    if request.method == 'POST':
+        song_id = request.POST.get('song_id')
+        # Connect to MongoDB and remove the song from the PlaylistMusicMapping collection
+        client = MongoClient('localhost', 27017)
+        db = client['music']  # Replace 'your_database_name' with your actual MongoDB database name
+        playlist_mapping_collection = db['PlaylistMusicMapping']
+        playlist_mapping_collection.delete_one({'playlist_id': str(playlist_id), 'music_id': str(song_id)})
+        
+    return HttpResponseRedirect(reverse('view_playlist_songs', args=[playlist_id]))
