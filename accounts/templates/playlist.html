@@ -8,16 +8,17 @@
     {% if user_playlists %}
         <ul>
             {% for playlist in user_playlists %}
-                <li>
-                    {{ playlist.playlist_name }}
-                    <form action="{% url 'delete_playlist' %}" method="post">
-                        {% csrf_token %}
-                        <a href="{% url 'view_playlist_songs' playlist.playlist_id %}">{{ playlist.playlist_name }}</a>
-
-                        <button type="submit">Delete</button>
-                    </form>
-                </li>
-            {% endfor %}
+            <li>
+                {{ playlist.playlist_name }}
+                <form action="{% url 'delete_playlist' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="playlist_name" value="{{ playlist.playlist_name }}">
+                    <a href="{% url 'view_playlist_songs' playlist.playlist_id %}">{{ playlist.playlist_name }}</a>
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+        
         </ul>
     {% else %}
         <p>No playlists found.</p>

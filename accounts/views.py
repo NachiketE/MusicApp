@@ -154,7 +154,7 @@ def save_playlist(user, playlist_name):
     collection = db[collection_name]
     
     # Generate a unique playlist_id
-    playlist_id = generate_unique_playlist_id(collection)
+    playlist_id = str(generate_unique_playlist_id(collection))
     
     # Insert the new playlist document
     playlist_data = {
@@ -180,7 +180,6 @@ def hash_user_id(user_id, num_partitions):
     
     return hash_value
 
-
 @login_required
 def delete_playlist_view(request):
     if request.method == 'POST':
@@ -191,14 +190,26 @@ def delete_playlist_view(request):
         # Get playlist name from form data
         playlist_name = request.POST.get('playlist_name')
 
-        # Delete the playlist from the MongoDB collection
-        collections = ['Playlist_1', 'Playlist_2']
-        for collection_name in collections:
-            collection = db[collection_name]
-            collection.delete_one({'playlist_name': playlist_name})
+        try:
+            # Delete the playlist from the MongoDB collection
+            collections = ['Playlist_1', 'Playlist_2']
+            for collection_name in collections:
+                collection = db[collection_name]
+                print("Collection:", collection_name)
 
-        # Redirect back to the playlist page
-        return HttpResponseRedirect(reverse('playlist'))
+                # Print debugging information
+                print("Deleting playlist:", playlist_name)
+
+                # Attempt to delete the playlist
+                result = collection.delete_one({'playlist_name': playlist_name})
+                print("Delete result:", result)
+
+            # Redirect back to the playlist page
+            return HttpResponseRedirect(reverse('playlist'))
+        except Exception as e:
+            print("Error:", e)
+            # Handle the error as needed
+
     
 @login_required
 def add_to_playlist_view(request):
