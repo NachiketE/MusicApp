@@ -12,6 +12,9 @@
         .navbar {
             background-color: #f8f9fa;
             padding: 20px;
+            display: flex;
+            justify-content: center; 
+            align-items: center; 
         }
         .navbar a {
             color: #000;
@@ -29,18 +32,15 @@
             margin-top: 20px;
         }
         ul {
-            margin-top: 30px;
             list-style-type: none;
             padding-left: 0;
-        }
-        li {
-            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <span class="navbar-brand">Music Dashboard</span>
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'admin_view_music' %}">View All Music</a>
