@@ -7,8 +7,8 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .no-margin{
-            margin-left: 5%;
-            margin-right: 5%;
+            margin-left: 15%;
+            margin-right: 15%;
         }
     </style>
 </head>
@@ -40,13 +40,16 @@
     <div class="no-margin">
 
     {% for result in search_results %}
-    <div class="card bg-light mb-3" style="max-width: 18rem;">
-        <div class="card-header">{{ result.title }}</div>
+    <div class="card bg-light mb-3" style="max-width: 100rem;">
+        <div class="card-header">{{ result.artist }}</div>
         <div class="card-body">
-            <h5 class="card-title">{{ result.artist }}</h5>
-            <p class="card-text">{{ result.description }}</p>
-
-            <div class="dropdown">
+            <div class = "row">
+            <div class = "col-md-10">
+                <h5 class="card-title">{{ result.title }}</h5>
+            <p class="card-text">Duration: {{ result.duration }} mins</p>
+        </div>
+        
+            <div class="dropdown col-md-2">
                 <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Add to Playlist
                 </button>
@@ -61,6 +64,7 @@
                     {% endfor %}
                 </div>
             </div>
+        </div>
         </div>
     </div>
     {% empty %}

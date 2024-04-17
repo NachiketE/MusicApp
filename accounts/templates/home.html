@@ -61,7 +61,43 @@
         <p>Welcome, Guest</p>
     {% endif %}
 </div>
+
+<div class = "no-margin">
+    <h2>Trending Songs</h2>
+    <br>
+    <div class="row">
+        {% for song in songs %}
+        <div class="col-md-4">
+            <div class="card bg-light mb-3">
+                <div class="card-header">{{ song.artist }}</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ song.title }}</h5>
+                    <p class="card-text">Duration: {{ song.duration }} mins</p>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Add to Playlist
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            {% for playlist in user_playlists %}
+                            <form action="{% url 'add_song_to_playlist' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="music_id" value="{{ song.music_id }}">
+                                <input type="hidden" name="playlist_id" value="{{ playlist.playlist_id }}">
+                                <button class="dropdown-item" type="submit">{{ playlist.playlist_name }}</button>
+                            </form>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
     <!-- Bootstrap JS (optional) -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </body>
 </html>

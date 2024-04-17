@@ -130,10 +130,15 @@ def playlists_page(request):
     return render(request, 'admin-templates/admin_playlists_page.html', {'playlists': playlists})
 
 def consistent_hash_alphabetical(name, num_partitions):
-    first_letter = name[0].lower()
-    ascii_value = ord(first_letter)
-    partition_number = ascii_value % num_partitions
-    return partition_number
+    hash_value = 0
+    for char in name:
+        hash_value += ord(char)    
+
+    hash_value *= 131
+    
+    bucket_number = hash_value % num_partitions
+
+    return bucket_number
 
 def generate_unique_music_id(collection):
     music_id = random.randint(1, 100000)

@@ -42,9 +42,29 @@ def signup_view(request):
 
 def home_view(request):
     username = request.user.username if request.user.is_authenticated else None
+    
+    # Connect to MongoDB
+    client = MongoClient('localhost', 27017)
+    db = client['music']
+    
+    # List of collection names
+    collections = ['Music_1', 'Music_2', 'Music_3', 'Music_4', 'Music_5']
+    
+    # List to store songs
+    songs = []
+    
+    # Retrieve songs from each collection where "trendy" is "1"
+    for collection_name in collections:
+        collection = db[collection_name]
+        trendy_songs = collection.find({'trendy': '1'})
+        songs.extend(trendy_songs)
+    
+    user = request.user
 
-    songs = Song.objects.all()
-    return render(request, 'home.html', {'username': username,'songs': songs})
+    user_playlists = get_user_playlists(user)
+    print(user_playlists)
+    # Return the rendered template with the songs and username
+    return render(request, 'home.html', {'username': username, 'songs': songs, 'user_playlists': user_playlists})
 
 def all_songs_view(request):
     # Connect to MongoDB
@@ -175,8 +195,13 @@ def generate_unique_playlist_id(collection):
 
 def hash_user_id(user_id, num_partitions):
     user_id_int = int(user_id)
+    hash_value = 0
     
-    hash_value = user_id_int % num_partitions
+    while user_id_int:
+        hash_value += user_id_int % 10
+        user_id_int //= 10
+    
+    hash_value %= num_partitions
     
     return hash_value
 

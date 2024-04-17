@@ -8,26 +8,26 @@ NUM_PARTITIONS = 2  # Number of partitions
 
 # Sample data to insert
 playlist_music_mapping_data = [
-    {"playlist_id": "1", "music_id": "1"},
-    {"playlist_id": "1", "music_id": "2"},
-    {"playlist_id": "2", "music_id": "3"},
-    {"playlist_id": "2", "music_id": "4"},
-    {"playlist_id": "3", "music_id": "5"},
-    {"playlist_id": "3", "music_id": "6"},
-    {"playlist_id": "4", "music_id": "7"},
-    {"playlist_id": "4", "music_id": "8"},
-    {"playlist_id": "5", "music_id": "9"},
-    {"playlist_id": "5", "music_id": "10"},
-    {"playlist_id": "6", "music_id": "11"},
-    {"playlist_id": "6", "music_id": "2"},
-    {"playlist_id": "7", "music_id": "3"},
-    {"playlist_id": "7", "music_id": "5"},
-    {"playlist_id": "8", "music_id": "5"},
-    {"playlist_id": "8", "music_id": "6"},
-    {"playlist_id": "9", "music_id": "5"},
-    {"playlist_id": "9", "music_id": "8"},
-    {"playlist_id": "10", "music_id": "9"},
-    {"playlist_id": "10", "music_id": "5"}
+    {"playlist_id": "1", "music_id": "55"},
+    {"playlist_id": "1", "music_id": "56"},
+    {"playlist_id": "5", "music_id": "70"},
+    {"playlist_id": "5", "music_id": "55"},
+    {"playlist_id": "18", "music_id": "61"},
+    {"playlist_id": "18", "music_id": "66"},
+    {"playlist_id": "18", "music_id": "48"},
+    {"playlist_id": "1", "music_id": "72"},
+    {"playlist_id": "5", "music_id": "57"},
+    {"playlist_id": "5", "music_id": "58"},
+    {"playlist_id": "5", "music_id": "40"},
+    {"playlist_id": "18", "music_id": "41"},
+    {"playlist_id": "1", "music_id": "42"},
+    {"playlist_id": "5", "music_id": "55"},
+    {"playlist_id": "18", "music_id": "62"},
+    {"playlist_id": "18", "music_id": "66"},
+    {"playlist_id": "5", "music_id": "57"},
+    {"playlist_id": "5", "music_id": "79"},
+    {"playlist_id": "1", "music_id": "69"},
+    {"playlist_id": "18", "music_id": "43"}
 ]
 
 # Hashing function for playlist ID
