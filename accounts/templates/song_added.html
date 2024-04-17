@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Song Added</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         .no-margin{
             margin-left: 5%;
@@ -13,11 +15,42 @@
 </head>
 <body>
 
-    <h2>Song Added to Playlist</h2>
-    <div class="no-margin">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light ">
+        <a class="navbar-brand " href="{% url 'home' %}">My Music App</a>
+    
+        <ul class="navbar-nav flex-row mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'all_songs' %}">View All Songs</a>
+            </li>
+            <li class="nav-item">
+                <form action="{% url 'create_playlist' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-link nav-link">Your Playlists</button>
+                </form>            
+            </li>
+        </ul>
+    
+        <form class="form-inline" action="{% url 'search_results' %}" method="get">
+            <input class="form-control mr-sm-2" type="search" name="q" placeholder="Search songs" aria-label="Search" size="50">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </nav>
 
-    <p>Song with ID {{ music_id }} has been successfully added to playlist with ID {{ playlist_id }}.</p>
-    <!-- You can provide links/buttons here to navigate back to the search results or any other page as needed -->
+
+    <div class="jumbotron">
+
+            <div >
+                <h2>Song Added to Playlist!</h2>
+            </div>
+            <div style="margin-top: 40px;">
+                <h6>Song with ID {{ music_id }} has been successfully added to playlist with ID {{ playlist_id }}.</h6>
+            </div>
+            
     </div>
+
+ 
 </body>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </html>
