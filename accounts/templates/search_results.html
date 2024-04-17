@@ -5,33 +5,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Results</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .no-margin{
+            margin-left: 5%;
+            margin-right: 5%;
+        }
+    </style>
 </head>
 <body>
-    <h2>Search Results for "{{ query }}"</h2>
-    <ul>
-        {% for result in search_results %}
-            <li>{{ result.title }} - {{ result.artist }}
-                <div class="dropdown">
-                    <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Add to Playlist
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        {% for playlist in user_playlists %}
-                        <form action="{% url 'add_song_to_playlist' %}" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="music_id" value="{{ result.music_id }}">
-                            <input type="hidden" name="playlist_id" value="{{ playlist.playlist_id }}">
-                            <button class="dropdown-item" type="submit">{{ playlist.playlist_name }}</button>
-                        </form>
-                        
-                        {% endfor %}
-                    </div>
-                </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light ">
+        <a class="navbar-brand " href="{% url 'home' %}">My Music App</a>
+    
+        <ul class="navbar-nav flex-row mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'all_songs' %}">View All Songs</a>
             </li>
-        {% empty %}
-            <li>No results found</li>
-        {% endfor %}
-    </ul>
+            <li class="nav-item">
+                <form action="{% url 'create_playlist' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-link nav-link">Your Playlists</button>
+                </form>            
+            </li>
+        </ul>
+    
+        <form class="form-inline" action="{% url 'search_results' %}" method="get">
+            <input class="form-control mr-sm-2" type="search" name="q" placeholder="Search songs" aria-label="Search" size="50">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </nav>
+    <div class="jumbotron">
+        <h2>Search Results for "{{ query }}":</h2>
+    </div>
+
+    <div class="no-margin">
+
+    {% for result in search_results %}
+    <div class="card bg-light mb-3" style="max-width: 18rem;">
+        <div class="card-header">{{ result.title }}</div>
+        <div class="card-body">
+            <h5 class="card-title">{{ result.artist }}</h5>
+            <p class="card-text">{{ result.description }}</p>
+
+            <div class="dropdown">
+                <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Add to Playlist
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    {% for playlist in user_playlists %}
+                    <form action="{% url 'add_song_to_playlist' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="music_id" value="{{ result.music_id }}">
+                        <input type="hidden" name="playlist_id" value="{{ playlist.playlist_id }}">
+                        <button class="dropdown-item" type="submit">{{ playlist.playlist_name }}</button>
+                    </form>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <h5>No results found!</h5>
+    {% endfor %}
+    <div class="no-margin">
+
+
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>

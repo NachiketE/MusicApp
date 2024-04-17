@@ -10,7 +10,8 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            padding: 20px;
+            
+            
         }
         .song-list {
             list-style-type: none;
@@ -22,6 +23,10 @@
         .jumbotron {
             margin-top: 50px;
             text-align: center;
+        }
+        .no-margin{
+            margin-left: 5%;
+            margin-right: 5%;
         }
     </style>
 </head>
@@ -47,19 +52,15 @@
         </form>
     </nav>
     
-    
-    
 
-
-    <div class="jumbotron">
-        {% if username %}
-        <h1 class="display-4">Welcome, {{ username }}</h1>
-        <p class="lead">View music and manage your playlists with ease.</p>
-        {% else %}
-            <p>Welcome, Guest</p>
-        {% endif %}
-    </div>
-    
+<div class="jumbotron">
+    {% if username %}
+    <h1 class="display-4">Welcome, {{ username }}</h1>
+    <p class="lead">View music and manage your playlists with ease.</p>
+    {% else %}
+        <p>Welcome, Guest</p>
+    {% endif %}
+</div>
     <!-- Bootstrap JS (optional) -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </body>

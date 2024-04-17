@@ -3,33 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+
     <title>Playlist Songs</title>
+    <style>
+        .no-margin{
+            margin-left: 5%;
+            margin-right: 5%;
+        }
+    </style>
 </head>
 <body>
-    <h2>Playlist Songs</h2>
-
-    {% if songs %}
-        <ul>
-            {% for song in songs %}
-                <li>
-                    <strong>Title:</strong> {{ song.title }}<br>
-                    <strong>Artist:</strong> {{ song.artist }}<br>
-                    <strong>Genre:</strong> {{ song.genre }}<br>
-                    <strong>Duration:</strong> {{ song.duration }}<br>
-                    <strong>Release Date:</strong> {{ song.release_date }}
-                    <form method="post" action="{% url 'delete_song_from_playlist' playlist_id %}">
-
-
-                        {% csrf_token %}
-                        <input type="hidden" name="song_id" value="{{ song.music_id }}">
-                        <button type="submit">Delete</button>
-                    </form>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No songs found in the playlist.</p>
-    {% endif %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light ">
+        <a class="navbar-brand " href="{% url 'home' %}">My Music App</a>
     
+        <ul class="navbar-nav flex-row mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'all_songs' %}">View All Songs</a>
+            </li>
+            <li class="nav-item">
+                <form action="{% url 'create_playlist' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-link nav-link">Your Playlists</button>
+                </form>            
+            </li>
+        </ul>
+    
+        <form class="form-inline" action="{% url 'search_results' %}" method="get">
+            <input class="form-control mr-sm-2" type="search" name="q" placeholder="Search songs" aria-label="Search" size="50">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </nav>
+
+
+    <div class="jumbotron">
+        <div class="row">
+
+            <div class="col-md-9">
+                <h2>Songs in playlist</h2>
+            </div>
+            <div class="col-md-3">
+                <a href="{% url 'create_playlist' %}" class="btn btn-dark">Create a new Playlist</a>
+            </div>
+        </div>
+    </div>
+    <div class="no-margin">
+
+        {% if songs %}
+        <div class="row">
+            {% for song in songs %}
+            <div class="col-md-4">
+                <div class="card bg-light mb-3">
+                    <div class="card-header">
+                        <h4>{{ song.title }}</h4>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Artist:</strong> {{ song.artist }}</p>
+                        <p><strong>Genre:</strong> {{ song.genre }}</p>
+                        <p><strong>Duration:</strong> {{ song.duration }}</p>
+                        <p><strong>Release Date:</strong> {{ song.release_date }}</p>
+                        <form method="post" action="{% url 'delete_song_from_playlist' playlist_id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="song_id" value="{{ song.music_id }}">
+                            <button type="submit" class="btn btn-danger">Remove from Playlist</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>No songs found in the playlist.</p>
+        {% endif %}
+        
+    </div>
 </body>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </html>
