@@ -4,31 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .song-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .song-item {
+            margin-bottom: 10px;
+        }
+        .jumbotron {
+            margin-top: 50px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    {% if username %}
-        <p>Welcome, {{ username }}</p>
-    {% else %}
-        <p>Welcome, Guest</p>
-    {% endif %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light ">
+        <a class="navbar-brand ">My Music App</a>
     
-    <form action="{% url 'search_results' %}" method="get">
-        <input type="text" name="q" placeholder="Search songs or artists">
-        <button type="submit">Search</button>
-    </form>
+        <ul class="navbar-nav flex-row mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'all_songs' %}">View All Songs</a>
+            </li>
+            <li class="nav-item">
+                <form action="{% url 'create_playlist' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-link nav-link">Your Playlists</button>
+                </form>            
+            </li>
+        </ul>
     
-    <h2>Your Songs:</h2>
-    <ul>
-        {% for song in songs %}
-            <li>{{ song.title }} - {{ song.artist }}</li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'all_songs' %}">View All Songs</a>
+        <form class="form-inline" action="{% url 'search_results' %}" method="get">
+            <input class="form-control mr-sm-2" type="search" name="q" placeholder="Search songs" aria-label="Search" size="50">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </nav>
+    
+    
+    
 
-    <form action="{% url 'create_playlist' %}" method="post">
-        {% csrf_token %}
-        <button type="submit">Your Playlists</button>
-    </form>
+
+    <div class="jumbotron">
+        {% if username %}
+        <h1 class="display-4">Welcome, {{ username }}</h1>
+        <p class="lead">View music and manage your playlists with ease.</p>
+        {% else %}
+            <p>Welcome, Guest</p>
+        {% endif %}
+    </div>
     
+    <!-- Bootstrap JS (optional) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </body>
 </html>
