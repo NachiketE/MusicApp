@@ -3,35 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music</title>
+    <title>All Songs</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding: 20px;
+        }
+        h1 {
+            margin-bottom: 30px;
+        }
+        .edit-form {
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>All Songs</h1>
-
-    <ul>
-        {% for song in songs %}
-        <li>
-            {{ song.title }} - {{ song.artist }}
-            <form action="{% url 'admin_delete_song' %}" method="post" style="display: inline;">
-                {% csrf_token %}
-                <input type="hidden" name="title" value="{{ song.title }}">
-                <button type="submit" class="btn btn-danger">Delete</button>
-            </form>
-            <button class="btn btn-primary edit-song" data-id="{{ song.id }}">Edit</button>
-            <div class="edit-form" style="display: none;">
-                <form action="{% url 'admin_edit_song' %}" method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="original_title" value="{{ song.title }}">
-                    <input type="text" name="title" placeholder="Title" value="{{ song.title }}">
-                    <input type="text" name="artist" placeholder="Artist" value="{{ song.artist }}">
-                    <!-- Add fields for other song attributes as needed -->
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </form>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">All Songs</a>
+    </nav>
+    <br> <br> <br>
+    <div class="container">
+        <div class="row">
+            {% for song in songs %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ song.title }}</h5>
+                        <p class="card-text">{{ song.artist }}</p>
+                        <form action="{% url 'admin_delete_song' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="title" value="{{ song.title }}">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                        <button class="btn btn-primary edit-song mt-2" data-id="{{ song.id }}">Edit</button>
+                        <div class="edit-form mt-2" style="display: none;">
+                            <form action="{% url 'admin_edit_song' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="original_title" value="{{ song.title }}">
+                                <input type="text" name="title" class="form-control mb-2" placeholder="Title" value="{{ song.title }}">
+                                <input type="text" name="artist" class="form-control mb-2" placeholder="Artist" value="{{ song.artist }}">
+                                <!-- Add fields for other song attributes as needed -->
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </li>
-        {% endfor %}
-    </ul>
+            {% endfor %}
+        </div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
