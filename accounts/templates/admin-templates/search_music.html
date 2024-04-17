@@ -5,34 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Results</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
-
+    <style>
+        .navbar {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        body {
+            padding: 20px;
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            margin-bottom: 20px;
+        }
+        .edit-form {
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Search Results for "{{ query }}"</h2>
-    <ul>
-        {% for result in search_results %}
-            <li>{{ result.title }} - {{ result.artist }}
-                <form action="{% url 'admin_delete_song' %}" method="post" style="display: inline;">
-                    {% csrf_token %}
-                    <input type="hidden" name="title" value="{{ result.title }}">
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
-                <button class="btn btn-primary edit-song" data-id="{{ result.id }}">Edit</button>
-            <div class="edit-form" style="display: none;">
-                <form action="{% url 'admin_edit_song' %}" method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="original_title" value="{{ result.title }}">
-                    <input type="text" name="title" placeholder="Title" value="{{ result.title }}">
-                    <input type="text" name="artist" placeholder="Artist" value="{{ result.artist }}">
-                    <!-- Add fields for other song attributes as needed -->
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </form>
-            </div>
-            </li>
-        {% empty %}
-            <li>No results found</li>
-        {% endfor %}
-    </ul>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Search Results</a>
+    </nav>
+    <br> <br> <br>
+    <div class="container">
+        <h2>Search Results for "{{ query }}"</h2>
+        <ul>
+            {% for result in search_results %}
+                <li>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ result.title }}</h5>
+                            <p class="card-text">Artist: {{ result.artist }}</p>
+                            <form action="{% url 'admin_delete_song' %}" method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="title" value="{{ result.title }}">
+                                <button type="submit" class="btn btn-danger mr-2">Delete</button>
+                            </form>
+                            <button class="btn btn-primary edit-song" data-id="{{ result.id }}">Edit</button>
+                            <div class="edit-form mt-2" style="display: none;">
+                                <form action="{% url 'admin_edit_song' %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="original_title" value="{{ result.title }}">
+                                    <input type="text" name="title" class="form-control mb-2" placeholder="Title" value="{{ result.title }}">
+                                    <input type="text" name="artist" class="form-control mb-2" placeholder="Artist" value="{{ result.artist }}">
+                                    <!-- Add fields for other song attributes as needed -->
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {% empty %}
+                <li>No results found</li>
+            {% endfor %}
+        </ul>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
