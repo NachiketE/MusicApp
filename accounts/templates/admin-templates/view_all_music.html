@@ -34,22 +34,30 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ song.title }}</h5>
                         <p class="card-text">{{ song.artist }}</p>
-                        <form action="{% url 'admin_delete_song' %}" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="title" value="{{ song.title }}">
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
-                        <button class="btn btn-primary edit-song mt-2" data-id="{{ song.id }}">Edit</button>
-                        <div class="edit-form mt-2" style="display: none;">
-                            <form action="{% url 'admin_edit_song' %}" method="post">
-                                {% csrf_token %}
-                                <input type="hidden" name="original_title" value="{{ song.title }}">
-                                <input type="text" name="title" class="form-control mb-2" placeholder="Title" value="{{ song.title }}">
-                                <input type="text" name="artist" class="form-control mb-2" placeholder="Artist" value="{{ song.artist }}">
-                                <!-- Add fields for other song attributes as needed -->
-                                <button type="submit" class="btn btn-primary">Save</button>
-                            </form>
+                        <div class="row">
+                            <div class = "col-md-4" style ="margin-top: 8px;">
+                                <form action="{% url 'admin_delete_song' %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="title" value="{{ song.title }}">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                            <div class = "col-md-8">
+                                <button class="btn btn-primary edit-song mt-2" data-id="{{ song.id }}">Edit</button>
+                                <div class="edit-form mt-2" style="display: none;">
+                                    <form action="{% url 'admin_edit_song' %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="original_title" value="{{ song.title }}">
+                                        <input type="text" name="title" class="form-control mb-2" placeholder="Title" value="{{ song.title }}">
+                                        <input type="text" name="artist" class="form-control mb-2" placeholder="Artist" value="{{ song.artist }}">
+                                        <!-- Add fields for other song attributes as needed -->
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    </form>
+                                </div>
+                            </div>
+                            
                         </div>
+                        
                     </div>
                 </div>
             </div>

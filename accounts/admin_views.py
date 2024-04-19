@@ -129,6 +129,7 @@ def playlists_page(request):
 
     return render(request, 'admin-templates/admin_playlists_page.html', {'playlists': playlists})
 
+#music insertion hashing
 def consistent_hash_alphabetical(name, num_partitions):
     hash_value = 0
     for char in name:

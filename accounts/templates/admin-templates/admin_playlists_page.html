@@ -34,7 +34,14 @@
         <ul class="list-group">
             {% for playlist in playlists %}
             <li class="list-group-item">
+                <div class = "row">
+                    <div class = "col-md-9">
                 <a href="{% url 'admin_view_playlist_songs' playlist.playlist_id %}">{{ playlist.playlist_name }}</a>
+                </div>
+                <div class = "col-md-3">
+                <span>Created by user id: {{ playlist.user_id }}</span>
+            </div>
+            </div>
             </li>
             {% endfor %}
         </ul>

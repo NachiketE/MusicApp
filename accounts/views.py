@@ -192,7 +192,7 @@ def generate_unique_playlist_id(collection):
     return playlist_id
 
 
-
+#playlist creation hash function
 def hash_user_id(user_id, num_partitions):
     user_id_int = int(user_id)
     hash_value = 0
