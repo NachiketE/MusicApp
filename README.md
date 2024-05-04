@@ -55,37 +55,58 @@ http://127.0.0.1:8000/admin-control/
 
 
 ## File directory description
-README.md:
-db.sqlite3:              
-manage.py               
-requirements.txt
+README.md: ReadME of the file          
+manage.py: File in Django used for administrative tasks such as starting the development server, running database migrations, and managing applications.               
+requirements.txt: contains all the requirements(dependencies of the file)
 
 ./accounts: (main directory - views has python scripts to handle the operations)
 
-__init__.py             apps.py                 models.py               views.py
-__pycache__             data_insertion_scripts  templates
-admin.py                forms.py                tests.py
-admin_views.py          migrations              urls.py
+__init__.py             
+apps.py: contains accounts app                 
+models.py: contains sample models                
+views.py: This file defines views and helper functions for managing user authentication, displaying songs and trendy songs, displaying playlists, playlist creation hash function and songs within a playlist, and searching songs and artist in a Django web application, interacting with a MongoDB database.
+__pycache__             
+data_insertion_scripts  
+templates                
+admin_views.py: This file defines views and helper functions for an admin interface in a Django web application, enabling functionalities such as editing, deleting, searching, and viewing music, displaying users and banning them, and viewing playlists and songs within them, music insertion hashing with interaction with a MongoDB database for data storage and retrieval.
+migrations              
+urls.py: contains urls of the system
 
 ./accounts/data_insertion_scripts: ( views have python scripts for sample data insertion and urls have front end url - python function mapping)
 
-MusicInsert.py                  PlaylistInsert.py               sample.py
-MusicPlaylistMappingInsert.py   UserInsert.py
+MusicInsert.py: Scripts for inserting music in the DB
+PlaylistInsert.py: Scripts for inserting playlist in the DB               
+MusicPlaylistMappingInsert.py: Scripts for inserting MusicPlaylistMappingInsert in the DB   
+UserInsert.py: Scripts for inserting users
 
 
 ./accounts/templates:(front end html, css, bootstrap files)
 
-admin-templates         home.html               search_results.html
-all_songs.html          playlist.html           single_playlist.html
-create_playlist.html    registration            song_added.html
+admin-templates         
+home.html: contains HTML for home page              
+search_results.html: contains HTML for displaying search results page
+all_songs.html: contains HTML for displaying all songs page
+playlist.html: contains HTML for displaying all songs page
+single_playlist.html: contains HTML for displaying all playlists 
+create_playlist.html: contains HTML for creating a playlist    
+registration            
+song_added.html: contains HTML for displaying song added success message
 
 ./accounts/templates/admin-templates:
 
-add_music.html                  admin_playlists_page.html       delete_user_success.html
-add_music_success.html          admin_single_playlist.html      edit_music_success.html
-admin_control.html              admin_users_page.html           search_music.html
-admin_music_page.html           delete_music_success.html       view_all_music.html
+add_music.html: contains HTML for adding music in the system
+admin_playlists_page.html: contains HTML for viewing playlists      
+delete_user_success.html: user deleted success message
+add_music_success.html: music added success message         
+admin_single_playlist.html: contains HTML for viewing songs in playlist      
+edit_music_success.html: contains HTML for edit music success
+admin_control.html: Admin home page             
+admin_users_page.html: contains HTML for displaying all users page           
+search_music.html: contains HTML for searching songs or artist           
+delete_music_success.html: music deleted success message        
+view_all_music.html: contains HTML for viewing all music 
 
 ./accounts/templates/registration:
 
-login.html      signup.html
+login.html: contains HTML for login page
+signup.html: contains HTML for signup page
