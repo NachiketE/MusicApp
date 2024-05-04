@@ -52,3 +52,40 @@ The Django web server (Music admin's page) can be found at:
 ```bash
 http://127.0.0.1:8000/admin-control/
 ```
+
+
+## File directory description
+README.md:
+db.sqlite3:              
+manage.py               
+requirements.txt
+
+./accounts: (main directory - views has python scripts to handle the operations)
+
+__init__.py             apps.py                 models.py               views.py
+__pycache__             data_insertion_scripts  templates
+admin.py                forms.py                tests.py
+admin_views.py          migrations              urls.py
+
+./accounts/data_insertion_scripts: ( views have python scripts for sample data insertion and urls have front end url - python function mapping)
+
+MusicInsert.py                  PlaylistInsert.py               sample.py
+MusicPlaylistMappingInsert.py   UserInsert.py
+
+
+./accounts/templates:(front end html, css, bootstrap files)
+
+admin-templates         home.html               search_results.html
+all_songs.html          playlist.html           single_playlist.html
+create_playlist.html    registration            song_added.html
+
+./accounts/templates/admin-templates:
+
+add_music.html                  admin_playlists_page.html       delete_user_success.html
+add_music_success.html          admin_single_playlist.html      edit_music_success.html
+admin_control.html              admin_users_page.html           search_music.html
+admin_music_page.html           delete_music_success.html       view_all_music.html
+
+./accounts/templates/registration:
+
+login.html      signup.html
